@@ -15,7 +15,7 @@ dependencies {
     api group: 'ch.qos.logback', name: 'logback-classic'
 
     api group: 'org.grails', name: 'grails-web-databinding'
-    implementation 'jakarta.annotation:jakarta.annotation-api'
+    implementation 'jakarta.annotation:jakarta.annotation-api:2.0.0'
     implementation "io.micronaut:micronaut-inject-groovy"
     api group: 'io.micronaut', name: 'micronaut-http-client'
 

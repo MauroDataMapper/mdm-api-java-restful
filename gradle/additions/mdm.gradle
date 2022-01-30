@@ -16,24 +16,24 @@ task('jvmArgs') {
     }
 }
 
-license {
-    header = file("${rootDir}/gradle/NOTICE.tmpl")
-    ext.year = Calendar.getInstance().get(Calendar.YEAR)
-    excludes([
-        '**/*.gson',
-        '**/*.yml',
-        '**/META-INF/**',
-        '**/*.txt',
-        '**/*.json',
-        '**/*.gml',
-        '**/*.jpeg',
-        '**/*.png',
-        '**/*.xml',
-        '**/*.sql',
-        '**/*.csv',
-        '**/*.xsd'
-    ])
-}
+//license {
+//    header = file("${rootDir}/gradle/NOTICE.tmpl")
+//    ext.year = Calendar.getInstance().get(Calendar.YEAR)
+//    excludes([
+//        '**/*.gson',
+//        '**/*.yml',
+//        '**/META-INF/**',
+//        '**/*.txt',
+//        '**/*.json',
+//        '**/*.gml',
+//        '**/*.jpeg',
+//        '**/*.png',
+//        '**/*.xml',
+//        '**/*.sql',
+//        '**/*.csv',
+//        '**/*.xsd'
+//    ])
+//}
 
 afterEvaluate {
     tasks.withType(Test) {testTask ->
