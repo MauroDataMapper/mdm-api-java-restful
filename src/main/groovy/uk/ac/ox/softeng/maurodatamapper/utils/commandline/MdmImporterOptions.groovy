@@ -20,22 +20,18 @@ package uk.ac.ox.softeng.maurodatamapper.utils.commandline;
 import picocli.CommandLine;
 
 @CommandLine.Command
-public class MdmImporterOptions extends MdmConnectionOptions {
+class MdmImporterOptions extends MdmConnectionOptions {
 
     @CommandLine.Option(
-            names = [ "-t", "--testOnly", "--csv.testOnly" ],
-            description = [ "If 'testOnly' is set, then the program will simply output the discovered columns and types, and not upload a model to the catalogue."],
-            required = false
+        names = ["-e", "--export"],
+        description = ["Export Data Model to JSON file."]
     )
-    boolean testOnly = true
-
+    String exportJsonFile
 
     @CommandLine.Option(
-            names = [ "-f", "--folderPath", "--import.folderPath" ],
-            description = [ "A path specifying the folder that models should be imported into.",
-            "Folders should be separated with a period ('.') character "],
-            required = false
+        names = ["-f", "--folder-id"],
+        description = ["An ID specifying the folder that the model should be imported into."]
     )
-    String folderPath
+    UUID folderId
 
 }

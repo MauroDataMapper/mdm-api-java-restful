@@ -23,13 +23,17 @@ import uk.ac.ox.softeng.maurodatamapper.utils.commandline.MdmConnectionOptions
 class CommandLineUtility {
 
     static void main(String[] args) {
-        String[] tempArgs = ["-v", "--baseUrl=http://localhost:8080", "--properties=...",
-                             "--properties=..."]
+        String[] tempArgs = ['-h', "-v", "-U=http://localhost:8080"/*, "--properties=...",
+                             "--properties=..."*/]
 
         MdmConnectionOptions options = new MdmConnectionOptions()
 
         CommandLineHelper commandLineHelper = new CommandLineHelper(options)
         commandLineHelper.parseArgs(tempArgs)
+
+        println 'options = ' + options
+        println 'options.clientBaseUrl = ' + options.clientBaseUrl
+        println 'options.verbose = ' + options.verbose
 
         System.err.println(options.clientBaseUrl)
         System.err.println(options.clientPassword)
