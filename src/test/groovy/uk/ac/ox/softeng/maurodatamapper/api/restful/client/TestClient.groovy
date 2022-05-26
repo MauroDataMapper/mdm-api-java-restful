@@ -24,13 +24,15 @@ import groovy.util.logging.Slf4j
 class TestClient {
 
     static void main(String[] args) throws Exception {
-        MauroDataMapperClient client
+        BindingMauroDataMapperClient client
         try {
             // client = new BindingMauroDataMapperClient('http://localhost:8080', 'james.welch@cs.ox.ac.uk', 'password')
-            client = new MauroDataMapperClient('https://modelcatalogue.cs.ox.ac.uk/continuous-deployment', UUID.fromString('9ce84cd6-f77d-45d2-a3bc-a8f5e7a8edb9'))
+            client = new BindingMauroDataMapperClient('https://modelcatalogue.cs.ox.ac.uk/continuous-deployment', UUID.fromString('a50befd8-6c4c-40e5-aef4-daf0494a4848'))
 
-            def terminology = client.exportTerminology(UUID.fromString('bc6011c6-0f35-4c2b-9ddb-346db891776b'))
-            System.err.println(terminology)
+            //def terminology = client.exportTerminology(UUID.fromString('bc6011c6-0f35-4c2b-9ddb-346db891776b'))
+            //def dataModel = client.exportDataModel(UUID.fromString('427d1243-4f89-46e8-8f8f-8424890b5083'))
+            def dataModel = client.exportAndBindDataModelById(UUID.fromString('427d1243-4f89-46e8-8f8f-8424890b5083'))
+            System.err.println(dataModel)
 
 
 
