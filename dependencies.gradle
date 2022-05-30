@@ -1,14 +1,24 @@
 dependencies {
 
+    api group: 'org.codehaus.groovy', name: 'groovy'
+
+    runtimeOnly "io.methvin:directory-watcher", {
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+
+    // Postgres database
+    runtimeOnly group: 'org.flywaydb', name: 'flyway-core'
+    runtimeOnly "org.hibernate:hibernate-jcache"
+    runtimeOnly group: 'org.ehcache', name: 'ehcache'
+    runtimeOnly group: 'org.postgresql', name: 'postgresql'
+
     api "uk.ac.ox.softeng.maurodatamapper:mdm-common:${mdmCoreVersion}"
-    implementation "uk.ac.ox.softeng.maurodatamapper:mdm-core:${mdmCoreVersion}"
+    api "uk.ac.ox.softeng.maurodatamapper:mdm-core:${mdmCoreVersion}"
     api "uk.ac.ox.softeng.maurodatamapper:mdm-plugin-datamodel:${mdmCoreVersion}"
     api "uk.ac.ox.softeng.maurodatamapper:mdm-plugin-terminology:${mdmCoreVersion}"
 
     implementation "org.grails.plugins:gsp"
     implementation "org.grails.plugins:views-json"
-
-    api group: 'org.codehaus.groovy', name: 'groovy'
 
     // Logging
     implementation group: 'org.slf4j', name: 'slf4j-api'
@@ -20,17 +30,7 @@ dependencies {
     api group: 'io.micronaut', name: 'micronaut-http-client'
 
     api group: 'org.grails', name: 'grails-gorm-testing-support'
-    api "io.methvin:directory-watcher", {
-        exclude group: 'com.google.guava', module: 'guava'
-    }
 
-    implementation group: 'org.flywaydb', name: 'flyway-core'
-    api "org.hibernate:hibernate-jcache"
-    api group: 'org.ehcache', name: 'ehcache'
-    api group: 'org.postgresql', name: 'postgresql'
-
-    runtimeOnly group: 'commons-io', name: 'commons-io', version: '2.6'
-    implementation 'info.picocli:picocli:4.6.2'
-
-
+//    runtimeOnly group: 'commons-io', name: 'commons-io', version: '2.6'
+    implementation 'info.picocli:picocli:4.6.3'
 }

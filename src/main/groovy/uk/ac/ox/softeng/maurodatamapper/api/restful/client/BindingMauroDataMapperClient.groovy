@@ -27,16 +27,21 @@ import uk.ac.ox.softeng.maurodatamapper.core.facet.ReferenceFile
 import uk.ac.ox.softeng.maurodatamapper.core.facet.SemanticLink
 import uk.ac.ox.softeng.maurodatamapper.core.facet.VersionLink
 import uk.ac.ox.softeng.maurodatamapper.datamodel.DataModel
+import uk.ac.ox.softeng.maurodatamapper.datamodel.DataModelService
 import uk.ac.ox.softeng.maurodatamapper.datamodel.facet.SummaryMetadata
 import uk.ac.ox.softeng.maurodatamapper.datamodel.facet.summarymetadata.SummaryMetadataReport
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.DataClass
+import uk.ac.ox.softeng.maurodatamapper.datamodel.item.DataClassService
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.DataElement
+import uk.ac.ox.softeng.maurodatamapper.datamodel.item.DataElementService
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.DataType
+import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.DataTypeService
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.EnumerationType
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.ModelDataType
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.PrimitiveType
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.ReferenceType
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.enumeration.EnumerationValue
+import uk.ac.ox.softeng.maurodatamapper.datamodel.provider.exporter.DataModelJsonExporterService
 import uk.ac.ox.softeng.maurodatamapper.datamodel.provider.importer.DataModelJsonImporterService
 import uk.ac.ox.softeng.maurodatamapper.terminology.CodeSet
 import uk.ac.ox.softeng.maurodatamapper.terminology.Terminology
@@ -84,6 +89,11 @@ class BindingMauroDataMapperClient extends MauroDataMapperClient implements Data
     }
 
     void initialise() {
+        dataModelJsonImporterService = new DataModelJsonImporterService()
+        dataModelJsonImporterService.dataModelService = new DataModelService()
+        dataModelJsonImporterService.dataModelService.dataClassService = new DataClassService()
+        dataModelJsonImporterService.dataModelService.dataClassService.dataElementService = new DataElementService()
+        dataModelJsonImporterService.dataModelService.dataTypeService = new DataTypeService()
         new DataTestSetupSpecInterceptor().configureDataTest(this)
         SimpleMapDatastore simpleDatastore = this.applicationContext.getBean(SimpleMapDatastore)
         this.currentSession = simpleDatastore.connect()
@@ -116,7 +126,7 @@ class BindingMauroDataMapperClient extends MauroDataMapperClient implements Data
 
     DataModel exportAndBindDataModelById(UUID id, String connectionName = defaultConnectionName) {
         Map exportModel = exportDataModel(id, connectionName)
-        dataModelJsonImporterService.bindMapToDataModel(getConnection(connectionName).clientUser, exportModel.dataModel as Map)
+        dataModelJsonImporterService.bindMapToDataModel(getConnection(connectionName).clientUser, exportModel)
     }
 
     DataModel findAndExportAndBindDataModelByName(String name, String connectionName = defaultConnectionName) {
