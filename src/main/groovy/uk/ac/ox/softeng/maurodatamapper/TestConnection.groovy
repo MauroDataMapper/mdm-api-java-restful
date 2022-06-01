@@ -15,11 +15,14 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package uk.ac.ox.softeng.maurodatamapper
+package uk.ac.ox.softeng
 
 import uk.ac.ox.softeng.maurodatamapper.api.restful.client.BindingMauroDataMapperClient
 import uk.ac.ox.softeng.maurodatamapper.terminology.Terminology
 
+import groovy.util.logging.Slf4j
+
+@Slf4j
 class TestConnection {
 
     static void main(String[] args) {
