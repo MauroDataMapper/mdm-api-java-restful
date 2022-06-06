@@ -19,8 +19,9 @@ package uk.ac.ox.softeng.maurodatamapper.api.restful.client
 
 import uk.ac.ox.softeng.maurodatamapper.api.restful.render.json.JsonViewRenderer
 import uk.ac.ox.softeng.maurodatamapper.datamodel.DataModel
+import uk.ac.ox.softeng.maurodatamapper.datamodel.provider.exporter.DataModelJsonExporterService
+import uk.ac.ox.softeng.maurodatamapper.util.Utils
 
-import grails.web.Controller
 import groovy.util.logging.Slf4j
 
 @Slf4j
@@ -31,6 +32,7 @@ class TestClient {
         MauroDataMapperClient client
         try {
             client = new BindingMauroDataMapperClient('http://localhost:8080', 'admin@maurodatamapper.com', 'password')
+            BindingMauroDataMapperClient secondaryClient = new BindingMauroDataMapperClient('secondary', 'http://secondary.localhost:8090', 'admin@maurodatamapper.com', 'password')
             // client = new MauroDataMapperClient('https://modelcatalogue.cs.ox.ac.uk/continuous-deployment', UUID.fromString('a50befd8-6c4c-40e5-aef4-daf0494a4848'))
 
             // localhost: 2d58e58b-ac23-484f-902a-12912a2e5343
@@ -48,6 +50,14 @@ class TestClient {
 
             log.debug('Exported DataModel: {}', dataModelExportJson)
 
+            DataModelJsonExporterService dataModelJsonExporterService = new DataModelJsonExporterService().tap {
+                templateEngine = JsonViewRenderer.instance.templateEngine
+            }
+
+            String dataModelExportModelJson = dataModelJsonExporterService.exportDataModel(client.getConnection().clientUser, dataModel, [:])
+
+            log.debug('Exported DataModel ExportModel: {}', dataModelExportModelJson)
+
             DataModel localDataModel = new DataModel(label: 'Test Client DataModel')
 
             String localDataModelJson = JsonViewRenderer.instance.renderDomain(localDataModel)
@@ -57,6 +67,10 @@ class TestClient {
             String localDataModelExportJson = JsonViewRenderer.instance.exportDomain(localDataModel, [template: '/dataModel/export'])
 
             log.debug('Local Exported DataModel: {}', localDataModelExportJson)
+
+            log.debug('----- Import to Secondary Catalogue -----')
+
+            secondaryClient.importDataModel(dataModel, Utils.toUuid('f2e12290-3dd9-4a4e-b619-98dd70291fe6'), 'Imported Linkage Model', false, false, 'secondary')
 
 
             //            client.openConnection('readerConnection', 'http://localhost:8080', 'reader@mdm.com', 'password')

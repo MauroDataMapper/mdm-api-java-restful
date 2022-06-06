@@ -25,6 +25,10 @@ dependencies {
         exclude group: 'org.grails.plugins', module: 'views-json'
     }
 
+    api 'uk.ac.ox.softeng.maurodatamapper.plugins:mdm-plugin-csv:4.2.0-SNAPSHOT', {
+        exclude group: 'org.grails.plugins', module: 'views-json'
+    }
+
     implementation "org.grails.plugins:gsp"
     implementation "org.grails.plugins:views-json:${grailsViewsVersion}"
 
