@@ -30,9 +30,9 @@ import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.DataTypeService
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.EnumerationTypeService
 import uk.ac.ox.softeng.maurodatamapper.datamodel.item.datatype.enumeration.EnumerationValueService
 import uk.ac.ox.softeng.maurodatamapper.datamodel.provider.exporter.DataModelJsonExporterService
-import uk.ac.ox.softeng.maurodatamapper.plugins.csv.datamodel.provider.importer.parameter.CsvDataModelImporterProviderServiceParameters
+//import uk.ac.ox.softeng.maurodatamapper.plugins.csv.datamodel.provider.importer.parameter.CsvDataModelImporterProviderServiceParameters
 import uk.ac.ox.softeng.maurodatamapper.util.Utils
-import uk.ac.ox.softeng.maurodatamapper.plugins.csv.datamodel.provider.importer.CsvDataModelImporterProviderService
+//import uk.ac.ox.softeng.maurodatamapper.plugins.csv.datamodel.provider.importer.CsvDataModelImporterProviderService
 
 import groovy.util.logging.Slf4j
 
@@ -44,42 +44,42 @@ class CsvTestClient {
         MauroDataMapperClient client
         try {
             //            client = new BindingMauroDataMapperClient('http://localhost:8080', 'admin@maurodatamapper.com', 'password')
-            BindingMauroDataMapperClient secondaryClient = new BindingMauroDataMapperClient('secondary', 'http://secondary.localhost:8090', 'admin@maurodatamapper.com',
-                                                                                            'password')
-
-            AuthorityService authorityService = new AuthorityService()
-            DataTypeService dataTypeService = new DataTypeService(enumerationTypeService: new EnumerationTypeService(enumerationValueService: new EnumerationValueService()))
-            DataModelService dataModelService = new DataModelService(dataTypeService: dataTypeService,
-                                                                     dataClassService: new DataClassService(dataElementService: new DataElementService()),
-                                                                     authorityService: authorityService)
-
-            CsvDataModelImporterProviderService csvDataModelImporterProviderService = new CsvDataModelImporterProviderService(authorityService: authorityService,
-                                                                                                                              dataTypeService: dataTypeService,
-                                                                                                                              dataModelService: dataModelService,
-                                                                                                                              classifierService: new ClassifierService())
-
-            File csvFile = new File('/Users/josephcrawford/data/recovery-metadata/target/0041/6_standardised/INT05_SGSS/INT05_SGSS_0041.csv')
-            byte[] csvBytes = csvFile.bytes
-
-            CsvDataModelImporterProviderServiceParameters parameters = new CsvDataModelImporterProviderServiceParameters(
-                importFile: new FileParameter(
-                    fileName: 'temporary',
-                    fileType: 'text/csv',
-                    fileContents: csvBytes
-                ),
-                modelName: 'API Client CSV Import Test'
-            )
-
-            DataModel csvDataModel = csvDataModelImporterProviderService.importDomain(secondaryClient.getConnection('secondary').clientUser, parameters)
-            csvDataModel.type = DataModelType.DATA_ASSET
-
-            DataModelJsonExporterService dataModelJsonExporterService = new DataModelJsonExporterService(templateEngine: JsonViewRenderer.instance.templateEngine)
-
-            String dataModelExportModelJson = dataModelJsonExporterService.exportDataModel(secondaryClient.getConnection('secondary').clientUser, csvDataModel, [:])
-
-            log.debug('CSV -> JSON: {}', dataModelExportModelJson)
-
-            secondaryClient.importDataModel(csvDataModel, Utils.toUuid('f2e12290-3dd9-4a4e-b619-98dd70291fe6'), 'Client CSV import', false, false, 'secondary')
+//            BindingMauroDataMapperClient secondaryClient = new BindingMauroDataMapperClient('secondary', 'http://secondary.localhost:8090', 'admin@maurodatamapper.com',
+//                                                                                            'password')
+//
+//            AuthorityService authorityService = new AuthorityService()
+//            DataTypeService dataTypeService = new DataTypeService(enumerationTypeService: new EnumerationTypeService(enumerationValueService: new EnumerationValueService()))
+//            DataModelService dataModelService = new DataModelService(dataTypeService: dataTypeService,
+//                                                                     dataClassService: new DataClassService(dataElementService: new DataElementService()),
+//                                                                     authorityService: authorityService)
+//
+//            CsvDataModelImporterProviderService csvDataModelImporterProviderService = new CsvDataModelImporterProviderService(authorityService: authorityService,
+//                                                                                                                              dataTypeService: dataTypeService,
+//                                                                                                                              dataModelService: dataModelService,
+//                                                                                                                              classifierService: new ClassifierService())
+//
+//            File csvFile = new File('/Users/josephcrawford/data/recovery-metadata/target/0041/6_standardised/INT05_SGSS/INT05_SGSS_0041.csv')
+//            byte[] csvBytes = csvFile.bytes
+//
+//            CsvDataModelImporterProviderServiceParameters parameters = new CsvDataModelImporterProviderServiceParameters(
+//                importFile: new FileParameter(
+//                    fileName: 'temporary',
+//                    fileType: 'text/csv',
+//                    fileContents: csvBytes
+//                ),
+//                modelName: 'API Client CSV Import Test'
+//            )
+//
+//            DataModel csvDataModel = csvDataModelImporterProviderService.importDomain(secondaryClient.getConnection('secondary').clientUser, parameters)
+//            csvDataModel.type = DataModelType.DATA_ASSET
+//
+//            DataModelJsonExporterService dataModelJsonExporterService = new DataModelJsonExporterService(templateEngine: JsonViewRenderer.instance.templateEngine)
+//
+//            String dataModelExportModelJson = dataModelJsonExporterService.exportDataModel(secondaryClient.getConnection('secondary').clientUser, csvDataModel, [:])
+//
+//            log.debug('CSV -> JSON: {}', dataModelExportModelJson)
+//
+//            secondaryClient.importDataModel(csvDataModel, Utils.toUuid('f2e12290-3dd9-4a4e-b619-98dd70291fe6'), 'Client CSV import', false, false, 'secondary')
 
             //            client.openConnection('readerConnection', 'http://localhost:8080', 'reader@mdm.com', 'password')
             //            client.openConnection('editorConnection', 'http://localhost:8080', 'ecitor@mdm.com', 'password')

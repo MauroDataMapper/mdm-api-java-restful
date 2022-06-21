@@ -3,6 +3,9 @@ package uk.ac.ox.softeng.maurodatamapper
 import uk.ac.ox.softeng.maurodatamapper.utils.commandline.MdmCommandLineTool
 import uk.ac.ox.softeng.maurodatamapper.utils.commandline.MdmConnectionOptions
 
+import groovy.util.logging.Slf4j
+
+@Slf4j
 class CommandLineTool extends MdmCommandLineTool<MdmConnectionOptions> {
     static void main(String[] args) {
         CommandLineTool commandLineTool = new CommandLineTool(args)
@@ -14,7 +17,7 @@ class CommandLineTool extends MdmCommandLineTool<MdmConnectionOptions> {
     }
 
     void run() {
-        println 'CommandLineTool::run'
-        println 'options.clientBaseUrl = ' + options.clientBaseUrl
+        log.debug('CommandLineTool::run')
+        log.debug('options.clientBaseUrl = {}', options.clientBaseUrl)
     }
 }

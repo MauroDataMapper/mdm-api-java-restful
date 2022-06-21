@@ -12,6 +12,7 @@
     </appender>
 
     <logger name="uk.ac.ox.softeng.maurodatamapper" level="DEBUG" />
+    <logger name="uk.ac.ox" level="DEBUG" />
 
     <root level="ERROR">
         <appender-ref ref="STDOUT" />
