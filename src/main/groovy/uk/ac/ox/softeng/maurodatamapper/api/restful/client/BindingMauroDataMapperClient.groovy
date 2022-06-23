@@ -87,6 +87,12 @@ class BindingMauroDataMapperClient extends MauroDataMapperClient implements Data
         initialise()
     }
 
+    // Local only client
+    BindingMauroDataMapperClient(String connectionName = DEFAULT_CONNECTION_NAME) {
+        super(connectionName)
+        initialise()
+    }
+
     void initialise() {
         dataModelJsonImporterService = new DataModelJsonImporterService()
         dataModelJsonImporterService.dataModelService = new DataModelService()
@@ -136,7 +142,7 @@ class BindingMauroDataMapperClient extends MauroDataMapperClient implements Data
 
     List<SummaryMetadata> listAndBindSummaryMetadata(CatalogueItemPrefix catalogueItemPrefix, UUID catalogueItemId,
                                                      String connectionName = defaultConnectionName) {
-        listSummaryMetadata(catalogueItemPrefix, catalogueItemId, connectionName).collect { summary ->
+        listSummaryMetadata(catalogueItemPrefix, catalogueItemId, connectionName).collect {summary ->
             SummaryMetadata summaryMetadata = new SummaryMetadata()
             bindData summaryMetadata, summary
             summaryMetadata.id = Utils.toUuid(summary.id as String)
@@ -145,32 +151,33 @@ class BindingMauroDataMapperClient extends MauroDataMapperClient implements Data
 
     List<Metadata> listAndBindMetadata(CatalogueItemPrefix catalogueItemPrefix, UUID catalogueItemId,
                                        String connectionName = defaultConnectionName) {
-        listMetadata(catalogueItemPrefix, catalogueItemId, connectionName).collect { md ->
+        listMetadata(catalogueItemPrefix, catalogueItemId, connectionName).collect {md ->
             Metadata metadata = new Metadata()
             bindData metadata, md
             metadata.id = Utils.toUuid(md.id as String)
         } as List<Metadata>
     }
 
-    void copyDataModelToTarget(UUID dataModelId, String targetConnectionName, UUID targetFolderId, boolean importAsNewDocumentationVersion,
+    void copyDataModelToTarget(UUID dataModelId, String targetConnectionName, UUID targetFolderId, boolean importAsNewBranchModelVersion,
+                               boolean importAsNewDocumentationVersion,
                                String sourceConnectionName = defaultConnectionName) {
         DataModel dataModel = exportAndBindDataModelById(dataModelId, sourceConnectionName)
-        importDataModel(dataModel, targetFolderId, dataModel.label, dataModel.finalised, importAsNewDocumentationVersion, targetConnectionName)
+        importDataModel(dataModel, targetFolderId, dataModel.label, dataModel.finalised, importAsNewBranchModelVersion, importAsNewDocumentationVersion, targetConnectionName)
     }
 
-    void copyFolderToTarget(UUID folderId, String targetConnectionName, UUID targetParentFolderId = null, boolean importAsNewDocumentationVersion,
+    void copyFolderToTarget(UUID folderId, String targetConnectionName, UUID targetParentFolderId = null,boolean importAsNewBranchModelVersion,  boolean importAsNewDocumentationVersion,
                             String sourceConnectionName = defaultConnectionName) {
         Map sourceFolderMap = getFolderById(folderId, sourceConnectionName)
         UUID targetFolderId = createFolder(sourceFolderMap, targetParentFolderId, targetConnectionName)
 
         List<UUID> dataModelsInSourceFolder = listDataModelsInFolder(folderId, sourceConnectionName)
-        dataModelsInSourceFolder.each { sourceDataModelId ->
-            copyDataModelToTarget(sourceDataModelId, targetConnectionName, targetFolderId, importAsNewDocumentationVersion, sourceConnectionName)
+        dataModelsInSourceFolder.each {sourceDataModelId ->
+            copyDataModelToTarget(sourceDataModelId, targetConnectionName, targetFolderId, importAsNewBranchModelVersion, importAsNewDocumentationVersion, sourceConnectionName)
         }
 
         List<UUID> subFoldersInSourceFolder = listSubFoldersInFolder(folderId, sourceConnectionName)
-        subFoldersInSourceFolder.each { sourceSubFolderId ->
-            copyFolderToTarget(sourceSubFolderId, targetConnectionName, targetFolderId, importAsNewDocumentationVersion, sourceConnectionName)
+        subFoldersInSourceFolder.each {sourceSubFolderId ->
+            copyFolderToTarget(sourceSubFolderId, targetConnectionName, targetFolderId, importAsNewBranchModelVersion, importAsNewDocumentationVersion, sourceConnectionName)
         }
     }
 }

@@ -85,6 +85,13 @@ class MauroDataMapperClient implements Closeable {
         initialiseServices()
     }
 
+    // Local only client
+    MauroDataMapperClient(String connectionName = DEFAULT_CONNECTION_NAME) {
+        defaultConnectionName = connectionName
+        openLocalConnection(connectionName)
+        initialiseServices()
+    }
+
     void initialiseServices() {
         JsonViewRenderer.instance.initialise()
         dataModelJsonExporterService = new DataModelJsonExporterService()
@@ -120,6 +127,10 @@ class MauroDataMapperClient implements Closeable {
         closeConnection(name)
         NAMED_CONNECTIONS[name] = new MauroDataMapperConnection(properties.getProperty("client.baseUrl"), properties.getProperty("client.username"),
                                                                 properties.getProperty("client.password"))
+    }
+
+    void openLocalConnection(String name) {
+        NAMED_CONNECTIONS[name] = new MauroDataMapperConnection()
     }
 
 
@@ -358,6 +369,7 @@ class MauroDataMapperClient implements Closeable {
 
         def domain = JsonViewRenderer.instance.renderDomain(parameters)
 
+        println 'domain = ' + domain
 
         HttpResponse<Map> response = getConnection(connectionName).POST(
             MauroDataMapperEndpoint.DATAMODEL_IMPORT.build(importerNamespace: importerNamespace,
@@ -391,7 +403,8 @@ class MauroDataMapperClient implements Closeable {
         response.body()
     }
 
-    UUID importDataModel(DataModel dataModel, UUID folderId, String dataModelName, Boolean finalised, Boolean importAsNewDocumentationVersion,
+    UUID importDataModel(DataModel dataModel, UUID folderId, String dataModelName, Boolean finalised, Boolean importAsNewBranchModelVersion,
+                         Boolean importAsNewDocumentationVersion,
                          String connectionName = defaultConnectionName) {
 
         FileParameter fileParameter = new FileParameter("temporaryFile", "",
@@ -405,6 +418,7 @@ class MauroDataMapperClient implements Closeable {
             folderId: folderId,
             modelName: dataModelName,
             finalised: finalised,
+            importAsNewBranchModelVersion: importAsNewBranchModelVersion,
             importAsNewDocumentationVersion: importAsNewDocumentationVersion,
             importFile: fileParameter
         )
