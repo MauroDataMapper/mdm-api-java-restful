@@ -369,7 +369,7 @@ class MauroDataMapperClient implements Closeable {
 
         def domain = JsonViewRenderer.instance.renderDomain(parameters)
 
-        println 'domain = ' + domain
+        //println 'domain = ' + domain
 
         HttpResponse<Map> response = getConnection(connectionName).POST(
             MauroDataMapperEndpoint.DATAMODEL_IMPORT.build(importerNamespace: importerNamespace,
